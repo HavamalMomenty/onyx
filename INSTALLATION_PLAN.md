@@ -1,6 +1,8 @@
 # Onyx Installation Plan: Azure VM for Iterative Development
 
 ## 1. Overview
+This is a CUSTOM BUILT file. It may not be fully reliable, but works for me. 
+
 
 This guide details how to set up an Onyx development environment on an Azure Ubuntu Virtual Machine (VM). The primary goal is to enable **iterative code changes** to the Onyx application itself (backend, frontend, model server) with quick redeployment cycles.
 
@@ -113,6 +115,9 @@ These services (PostgreSQL, Vespa, Redis) are prerequisites for Onyx. We will ru
     ```
     *   This uses the development-focused Docker Compose file.
     *   The containers will run in the background (`-d`).
+    *   One time i had to re-run this.
+    *   Chech that all 3 containers are running using sudo docker ps
+    
 3.  Verify the containers are running:
     ```bash
     sudo docker ps
@@ -133,8 +138,8 @@ These services (PostgreSQL, Vespa, Redis) are prerequisites for Onyx. We will ru
     It's good practice to create this outside the main project directory if you encounter issues with IDEs/MyPy, or inside if preferred.
     ```bash
     # Example: creating it one level up from project root
-    python3.11 -m venv ../onyx_dev_venv 
-    source ../onyx_dev_venv/bin/activate
+    python3.11 -m venv onyx_dev_venv 
+    source onyx_dev_venv_2/bin/activate
     
     # Or, inside the project as .venv:
     # python3.11 -m venv .venv
@@ -172,7 +177,7 @@ These services (PostgreSQL, Vespa, Redis) are prerequisites for Onyx. We will ru
 
 ## 6. Running Onyx Application (Directly on VM)
 
-Ensure your Python virtual environment is active (e.g., `source ../onyx_dev_venv/bin/activate`).
+Ensure your Python virtual environment is active (e.g., `source onyx_dev_venv_2/bin/activate`).
 Ensure the Docker containers for Postgres, Vespa, and Redis are running (from Step 4).
 
 Open separate terminal sessions on your VM for each server component.
@@ -211,10 +216,16 @@ Open separate terminal sessions on your VM for each server component.
     ```
     The frontend will be available at `http://localhost:3000` on your VM. It will connect to the API server at port 8080.
 
+**DEBUGGING**:
+Previously environment has been at fault.
+Solution was 1. create new python venv, 2. Install dependencies. The depencencies where all those that are pip installed ie. pip install -r backend/requirements/default.txt etc.
+
 **Accessing Onyx**: 
 Setup via tunnel: Run this in LOCAL (local PC) terminal, NOT on VM. 
 ```bash
-ssh -L 13000:localhost:3000 -L 18080:localhost:8080 -L 19000:localhost:9000 HavamalMomenty
+ssh -L 3000:localhost:3000 -L 8080:localhost:8080 -L 9000:localhost:9000 HavamalMomenty
+eller
+ ssh -L 3000:localhost:3000 -L 8080:localhost:8080 -L 9000:localhost:9000 adrian_user@20.13.128.14
 ```
 If you are running a desktop environment on your Azure VM, you can open a browser to `http://localhost:3000`. If you are headless, you might need to set up SSH port forwarding or an SSH tunnel to access `localhost:3000` on your VM from your local machine's browser.
 Example SSH local port forwarding (run on your local machine, not the VM):

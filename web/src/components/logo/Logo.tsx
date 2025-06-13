@@ -27,16 +27,17 @@ export function Logo({
   height = height || defaultHeight;
   width = width || defaultWidth;
 
-  if (
-    !settings ||
-    !settings.enterpriseSettings ||
-    !settings.enterpriseSettings.use_custom_logo
-  ) {
+  // TEMPORARY CHANGE FOR DEBUGGING: Force this block to execute
+  if (true) {
     return (
       <div style={{ height, width }} className={className}>
-        <OnyxIcon
-          size={height}
-          className={`${className} dark:text-[#fff] text-[#000]`}
+        {/* Original OnyxIcon replaced with custom image */}
+        <img
+          src="/Logo_TLNDR_Neg_RGB.png"
+          alt="Onyx Logo"
+          style={{ objectFit: "contain", height, width }}
+          // Retaining className for potential layout styling from parent
+          className={`${className}`}
         />
       </div>
     );
@@ -62,10 +63,19 @@ export function LogoType({
 }: {
   size?: "small" | "default" | "large";
 }) {
+  // TEMPORARY CHANGE FOR DEBUGGING
   return (
-    <OnyxLogoTypeIcon
-      size={115}
-      className={`items-center w-full dark:text-[#fff]`}
+    <img
+      src="/Logo_T_Neg_RGB.png"
+      alt="Custom LogoType"
+      style={{ height: "40px", width: "auto" }} // Adjust size as needed for a logotype
     />
   );
+  // Original return:
+  // return (
+  //   <OnyxLogoTypeIcon
+  //     size={115}
+  //     className={`items-center w-full dark:text-[#fff]`}
+  //   />
+  // );
 }
