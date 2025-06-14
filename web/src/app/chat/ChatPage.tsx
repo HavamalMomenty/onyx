@@ -70,7 +70,7 @@ import { DocumentResults } from "./documentSidebar/DocumentResults";
 import { OnyxInitializingLoader } from "@/components/OnyxInitializingLoader";
 import { FeedbackModal } from "./modal/FeedbackModal";
 import { ShareChatSessionModal } from "./modal/ShareChatSessionModal";
-import { FiArrowDown } from "react-icons/fi";
+import { FiArrowDown, FiChevronRight, FiX } from "react-icons/fi";
 import { ChatIntro } from "./ChatIntro";
 import { AIMessage, HumanMessage } from "./message/Messages";
 import { StarterMessages } from "../../components/assistants/StarterMessage";
@@ -97,6 +97,8 @@ import {
 import { ChatInputBar } from "./input/ChatInputBar";
 import { useChatContext } from "@/components/context/ChatContext";
 import { ChatPopup } from "./ChatPopup";
+import WorkflowButton from "@/components/ui/WorkflowButton";
+import TemplatesSection from "@/components/ui/TemplatesSection";
 import FunctionalHeader from "@/components/chat/Header";
 import { useSidebarVisibility } from "@/components/chat/hooks";
 import {
@@ -229,6 +231,7 @@ export function ChatPage({
 
   const [toggleDocSelection, setToggleDocSelection] = useState(false);
   const [documentSidebarVisible, setDocumentSidebarVisible] = useState(false);
+  const [templateSidebarVisible, setTemplateSidebarVisible] = useState(false);
   const [proSearchEnabled, setProSearchEnabled] = useState(proSearchToggled);
   const toggleProSearch = () => {
     Cookies.set(
@@ -3335,6 +3338,7 @@ export function ChatPage({
                               handleFileUpload={handleMessageSpecificFileUpload}
                               textAreaRef={textAreaRef}
                             />
+
                             {enterpriseSettings &&
                               enterpriseSettings.custom_lower_disclaimer_content && (
                                 <div className="mobile:hidden mt-4 flex items-center justify-center relative w-[95%] mx-auto">
@@ -3360,8 +3364,66 @@ export function ChatPage({
                               )}
                           </div>
                         </div>
+                        
+                        {/* Fixed position template button */}
+                        <div 
+                          style={{
+                            position: "fixed",
+                            right: "20px",
+                            bottom: "100px",
+                            zIndex: 40
+                          }}
+                        >
+                          <button 
+                            onClick={() => setTemplateSidebarVisible(!templateSidebarVisible)}
+                            className="flex items-center bg-neutral-800 hover:bg-neutral-700 px-3 py-2 rounded-md transition-colors"
+                            style={{color: "#ffffff"}}
+                          >
+                            <span style={{color: "#ffffff"}}>Open Template Workflows</span>
+                            <FiChevronRight className="ml-2" style={{color: "#ffffff"}} />
+                          </button>
+                        </div>
                       </div>
+                      
 
+
+                      {/* Template Sidebar - Fixed position to avoid pushing chat box */}
+                      <div
+                        style={{ 
+                          transition: "right 0.30s ease-out",
+                          position: "fixed",
+                          top: 0,
+                          right: templateSidebarVisible ? "0" : "-400px",
+                          width: "400px",
+                          zIndex: 50
+                        }}
+                        className={`
+                          overflow-y-hidden 
+                          bg-neutral-900
+                          duration-300 
+                          ease-in-out
+                          h-full
+                        `}
+                      >
+                        {templateSidebarVisible && (
+                          <div className="p-6 h-full overflow-y-auto">
+                            <div className="flex justify-between items-center mb-6">
+                              <h2 className="text-xl font-bold" style={{color: '#ffffff'}}>Template Workflows</h2>
+                              <button 
+                                onClick={() => setTemplateSidebarVisible(false)}
+                                className="text-white hover:text-neutral-200"
+                              >
+                                <FiX size={24} />
+                              </button>
+                            </div>
+                            <div className="space-y-4">
+                              <TemplatesSection />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Document Sidebar */}
                       <div
                         style={{ transition: "width 0.30s ease-out" }}
                         className={`
@@ -3375,9 +3437,9 @@ export function ChatPage({
                           ${
                             documentSidebarVisible && !settings?.isMobile
                               ? "w-[350px]"
-                              : "w-[0px]"
+                              : "w-0"
                           }
-                      `}
+                        `}
                       />
                     </div>
                   )}
