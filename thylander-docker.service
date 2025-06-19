@@ -1,0 +1,14 @@
+[Unit]
+Description=Thylander Docker Services
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/adrian_user/onyx/deployment/docker_compose
+ExecStart=/usr/bin/docker compose -f docker-compose.dev.yml -p onyx-stack up -d index relational_db cache
+ExecStop=/usr/bin/docker compose -f docker-compose.dev.yml -p onyx-stack stop
+
+[Install]
+WantedBy=multi-user.target

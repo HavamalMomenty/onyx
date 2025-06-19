@@ -1,0 +1,21 @@
+[Unit]
+Description=Thylander API Server
+After=network.target thylander-docker.service thylander-model-server.service
+Requires=thylander-docker.service
+
+[Service]
+Type=simple
+User=adrian_user
+WorkingDirectory=/home/adrian_user/onyx/backend
+# First run DB migrations
+ExecStartPre=/home/adrian_user/onyx/onyx_dev_venv_2/bin/alembic upgrade head
+Environment="AUTH_TYPE=disabled"
+Environment="DISABLE_AUTH_ON_UPSERT=true"
+Environment="FASTAPI_WORKERS=1"
+Environment="ENABLE_PAID_ENTERPRISE_EDITION_FEATURES=false"
+ExecStart=/home/adrian_user/onyx/onyx_dev_venv_2/bin/uvicorn onyx.main:app --port 8080 --host 0.0.0.0
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

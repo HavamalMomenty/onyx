@@ -36,8 +36,17 @@ const nextConfig = {
         port: "",
         pathname: "/s2/favicons/**",
       },
+      {
+        protocol: "https",
+        hostname: "momenty.dk",
+        port: "",
+        pathname: "/**",
+      },
     ],
     unoptimized: true, // Disable image optimization to avoid requiring Sharp
+  },
+  env: {
+    NEXT_PUBLIC_SITE_URL: 'https://momenty.dk',
   },
   async headers() {
     return [

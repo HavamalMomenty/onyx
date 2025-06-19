@@ -1,6 +1,7 @@
 // /home/adrian_user/onyx/web/src/components/ui/WorkflowButton.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from "@/lib/utils";
+import { useRouter } from 'next/navigation';
 
 interface WorkflowButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
@@ -10,10 +11,11 @@ interface WorkflowButtonProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const WorkflowButton = React.forwardRef<HTMLDivElement, WorkflowButtonProps>(
   ({ className, title = "Evaluate Property", description = "This workflow analyzes a property from an investment perspective. Output is a 1-5 page document highlighting critical investment metrics of the property.", ...props }, ref) => {
-    const [showHi, setShowHi] = useState(false);
-
+    const router = useRouter();
+    
     const handleClick = () => {
-      setShowHi(!showHi);
+      // Pass workflow title and description as URL parameters
+      router.push(`/workflow?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`);
     };
 
     return (
@@ -33,13 +35,7 @@ const WorkflowButton = React.forwardRef<HTMLDivElement, WorkflowButtonProps>(
           {description}
         </div>
 
-        {showHi && (
-          <div 
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 bg-white/95 dark:bg-neutral-800/95 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg z-50"
-          >
-            <strong className="text-3xl">HI</strong>
-          </div>
-        )}
+        {/* No modal, just redirects to workflow page */}
       </div>
     );
   }

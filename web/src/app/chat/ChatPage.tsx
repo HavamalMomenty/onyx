@@ -3370,13 +3370,13 @@ export function ChatPage({
                           style={{
                             position: "fixed",
                             right: "20px",
-                            bottom: "100px",
+                            bottom: "56px",
                             zIndex: 40
                           }}
                         >
                           <button 
                             onClick={() => setTemplateSidebarVisible(!templateSidebarVisible)}
-                            className="flex items-center bg-neutral-800 hover:bg-neutral-700 px-3 py-2 rounded-md transition-colors"
+                            className="flex items-center bg-neutral-700 hover:bg-neutral-600 px-5 py-4 rounded-md transition-colors"
                             style={{color: "#ffffff"}}
                           >
                             <span style={{color: "#ffffff"}}>Open Template Workflows</span>
@@ -3413,7 +3413,7 @@ export function ChatPage({
                                 onClick={() => setTemplateSidebarVisible(false)}
                                 className="text-white hover:text-neutral-200"
                               >
-                                <FiX size={24} />
+                                <FiX size={24} className="text-white" />
                               </button>
                             </div>
                             <div className="space-y-4">

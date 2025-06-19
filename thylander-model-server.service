@@ -1,0 +1,15 @@
+[Unit]
+Description=Thylander Model Server
+After=network.target thylander-docker.service
+Requires=thylander-docker.service
+
+[Service]
+Type=simple
+User=adrian_user
+WorkingDirectory=/home/adrian_user/onyx/backend
+ExecStart=/home/adrian_user/onyx/onyx_dev_venv_2/bin/uvicorn model_server.main:app --port 9000 --host 0.0.0.0
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

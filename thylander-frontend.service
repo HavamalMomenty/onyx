@@ -1,0 +1,18 @@
+[Unit]
+Description=Thylander Frontend
+After=network.target thylander-api-server.service
+Requires=thylander-api-server.service
+
+[Service]
+Type=simple
+User=adrian_user
+WorkingDirectory=/home/adrian_user/onyx/web
+# In production, use the "start" script which uses the built version
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=3000
+
+[Install]
+WantedBy=multi-user.target

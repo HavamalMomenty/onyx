@@ -2,6 +2,7 @@
 .vscode
 .zed
 
+config_files_openmanus
 # macos
 .DS_store
 
